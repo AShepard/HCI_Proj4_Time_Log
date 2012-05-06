@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TimeLog</string>
+    <string name="from">From: </string>
+    <string name="to">To: </string>
+    <string name="duration">Duration:</string>
+    <string name="set">&quot;  Set  &quot;</string>
+    <string name="colon">&quot; : &quot;</string>
+</resources>

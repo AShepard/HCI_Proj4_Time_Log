@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+    
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+        			android:id="@+id/relativeLayout1" 
+        			android:layout_width="match_parent" 
+        			android:layout_height="match_parent" 
+        			android:gravity="right">
+        			
+        <LinearLayout android:orientation="horizontal"
+            		  android:layout_height="wrap_content" 
+            		  android:id="@+id/layoutInterval" 
+            		  android:layout_width="match_parent">
+            <TextView android:text="@string/from" 
+                	  android:layout_height="wrap_content" 
+                	  android:layout_width="wrap_content" 
+                	  android:id="@+id/textFrom" 
+                	  android:layout_weight="1">
+            </TextView>
+            <TextView android:text="@string/to" 
+                      android:layout_height="wrap_content" 
+                      android:id="@+id/textTo" 
+                      android:layout_width="wrap_content" 
+                      android:layout_weight="1" 
+                      android:layout_gravity="right" 
+                      android:gravity="right">
+            </TextView>
+        </LinearLayout>
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/pickerHeight"
+            android:layout_below="@+id/layoutInterval"
+            android:calendarViewShown="false">
+        </DatePicker>
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/pickerHeight"
+            android:layout_below="@+id/datePicker" >
+        </TimePicker>
+        <TextView android:text="@string/duration" 
+            	  android:layout_height="wrap_content" 
+            	  android:layout_width="match_parent" 
+            	  android:id="@+id/textDuration" 
+            	  android:layout_below="@+id/timePicker">
+        </TextView>
+        <LinearLayout android:id="@+id/layoutDuration" 
+            		  android:orientation="horizontal"
+            		  android:baselineAligned="false"
+            		  android:layout_height="@dimen/pickerHeight" 
+            		  android:layout_width="match_parent" 
+            		  android:layout_below="@+id/textDuration"
+            		  android:layout_gravity="center_vertical"
+            		  android:paddingLeft="16dp">
+            <NumberPicker android:layout_width="wrap_content" 
+                		  android:layout_height="match_parent" 
+                		  android:layout_gravity="center_vertical"
+                		  android:id="@+id/hourPicker">
+            </NumberPicker>
+            <TextView android:text="@string/colon" 
+            	      android:layout_height="wrap_content" 
+            	      android:layout_width="wrap_content" 
+            	      android:id="@+id/colon" 
+            	      android:layout_gravity="center_vertical"
+            	      android:paddingLeft="10dp"
+            	      android:paddingRight="10dp">
+            </TextView>
+            <NumberPicker android:layout_width="wrap_content" 
+                		  android:layout_height="wrap_content" 
+                		  android:id="@+id/minutePicker"
+                		  android:layout_gravity="center_vertical">
+            </NumberPicker>
+        </LinearLayout>  
+        <Button android:layout_height="wrap_content" 
+                	android:text="@string/set" 
+                	android:id="@+id/buttonSet" 
+                	android:layout_width="wrap_content" 
+                	android:onClick="buttonSetOnClick"
+                	android:layout_gravity="bottom"
+        			android:layout_alignParentBottom="true"
+        			android:layout_alignParentRight="true"
+        			android:layout_alignParentTop="false">
+        </Button>
+    </RelativeLayout>
