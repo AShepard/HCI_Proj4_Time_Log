@@ -24,8 +24,7 @@ public class NewEntry extends Activity
 	private int m_to_Year = 2012, m_to_Month = 4, m_to_Day = 27;
 	private int m_to_Hour = 23, m_to_Minute = 59;
 	
-	private TextView tv_text_from;
-	private TextView tv_text_to;
+	private static final String NEW_ENTRY = "NEW ENTRY";
 	
 	private DatePicker datePicker;
 	private TimePicker timePicker;
@@ -40,8 +39,6 @@ public class NewEntry extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newentry);
         
-        tv_text_from = (TextView) findViewById(R.id.textFrom);
-        tv_text_to = (TextView) findViewById(R.id.textTo);
         
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         datePicker.init(m_from_Year, m_from_Month, m_from_Day, null);
@@ -70,43 +67,50 @@ public class NewEntry extends Activity
 			}
 		});
         
-        UpdateDisplay();
     }
     
-    String DateTimem_to_String(int year, int month, int day, int hour, int minute)
+    String DateTimeToString(int year, int month, int day, int hour, int minute)
     {
-    	return (month + "-" + day + "-" + year + ", " + hour + ":" + String.format("%02d", minute));
+    	return (month + "/" + day + "/" + year + ", " + hour + ":" + String.format("%02d", minute));
     }
     
-    void UpdateDisplay()
+    String DurationToString(String from_date, String to_date) {
+    	String duration = "";
+    	
+    	duration = from_date + " - " + to_date;
+    	
+    	return duration;
+    }
+    
+    void addDuration()
     {
-    	tv_text_from.setText(getString(R.string.from) + " " +
-        	DateTimem_to_String(m_from_Year, m_from_Month, m_from_Day, m_from_Hour, m_from_Minute));
-    	tv_text_to.setText(getString(R.string.to) + " " +
-        	DateTimem_to_String(m_to_Year, m_to_Month, m_to_Day, m_to_Hour, m_to_Minute));
+    	String to_date, from_date, duration;
+    	to_date= DateTimeToString(m_from_Year, m_from_Month, m_from_Day, m_from_Hour, m_from_Minute);
+    	from_date =	DateTimeToString(m_to_Year, m_to_Month, m_to_Day, m_to_Hour, m_to_Minute);
+    	
+    	duration = DurationToString(from_date, to_date);
+    	
+    	finishEntry(duration);
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar, menu);
+        inflater.inflate(R.menu.actionbarnewentry, menu);
         return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_entry:
-            	/*
-                // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_m_to_P);
-                startActivity(intent);
-                */
-                return true;
+            case R.id.home:
+            	finishEntry("");
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
+        
+        return true;
     }
     
     public void buttonSetOnClick(View view)
@@ -129,6 +133,19 @@ public class NewEntry extends Activity
     	m_to_Hour = calendar.get(Calendar.HOUR_OF_DAY);
     	m_to_Minute = calendar.get(Calendar.MINUTE);
     	
-    	UpdateDisplay();
+    	addDuration();
     }
+    
+    private void finishEntry(String new_entry) {
+    	Intent intent = this.getIntent();
+    	
+    	if(new_entry != "") {
+    		intent.putExtra(NEW_ENTRY, new_entry);
+    		this.setResult(RESULT_OK, intent);
+    	} else {
+    		this.setResult(RESULT_CANCELED, intent);
+    	}
+    	finish();
+    }
+    
 }
