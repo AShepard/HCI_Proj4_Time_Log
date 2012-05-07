@@ -6,4 +6,7 @@
     <string name="duration">Duration:</string>
     <string name="set">&quot;  Set  &quot;</string>
     <string name="colon">&quot; : &quot;</string>
+    <string name="new_entry">NEW ENTRY</string>
+    <string name="settings">SETTINGS</string>
+    <string name="help">HELP</string>
 </resources>
