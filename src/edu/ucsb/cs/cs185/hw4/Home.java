@@ -3,7 +3,9 @@ package edu.ucsb.cs.cs185.hw4;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,6 +71,38 @@ public class Home extends ListActivity  {
                 Intent intent = new Intent(this, NewEntry.class);
                 startActivityForResult(intent, NEW_ENTRY_KEY);
                 break;
+            case R.id.settings:
+            	/*
+            	 * http://www.helloandroid.com/tutorials/how-display-alertdialog-your-android-application
+            	 */
+            	AlertDialog settings_dialog = new AlertDialog.Builder(Home.this).create();
+            	settings_dialog.setMessage("There are no settings yet!");
+            	
+            	settings_dialog.setButton("OK", new DialogInterface.OnClickListener() {
+          	      public void onClick(DialogInterface dialog, int which) {
+          	 
+          	       //nothing to do
+          	 
+          	    } });
+            	
+            	settings_dialog.show();
+            	break;
+            case R.id.help:
+            	/*
+            	 * http://www.helloandroid.com/tutorials/how-display-alertdialog-your-android-application
+            	 */
+            	AlertDialog help_dialog = new AlertDialog.Builder(Home.this).create();
+            	help_dialog.setMessage("Name: Aaron Shepard. \nSoftware Version: Unknown. \nExtra Info: This project deserves an A+!");
+            	
+            	help_dialog.setButton("OK", new DialogInterface.OnClickListener() {
+          	      public void onClick(DialogInterface dialog, int which) {
+          	 
+          	       //nothing to do
+          	 
+          	    } });
+            	
+            	help_dialog.show();
+            	break;
             default:
                 return false;
         }
@@ -93,6 +127,10 @@ public class Home extends ListActivity  {
     	m_durations.add(new_entry);
     	updateList();
     }
+    
+    /*
+     * http://developer.android.com/resources/tutorials/views/hello-listview.html
+     */
     private void updateList() {
     	setListAdapter(new ArrayAdapter<String>(this, R.layout.home, m_durations));
     }
