@@ -116,9 +116,7 @@ public class NewEntry extends Activity
             	settings_dialog.setMessage("There are no settings yet!");
             	settings_dialog.setButton("OK", new DialogInterface.OnClickListener() {
             	      public void onClick(DialogInterface dialog, int which) {
-            	 
             	       //nothing to do
-            	 
             	    } });
             	settings_dialog.show();
             	break;
@@ -131,9 +129,7 @@ public class NewEntry extends Activity
             	
             	help_dialog.setButton("OK", new DialogInterface.OnClickListener() {
           	      public void onClick(DialogInterface dialog, int which) {
-          	 
           	       //nothing to do
-          	 
           	    } });
             	
             	help_dialog.show();
@@ -169,8 +165,10 @@ public class NewEntry extends Activity
 			intent.putExtra(FROM_DAY, m_from_Day);
 			intent.putExtra(FROM_HOUR, m_from_Hour);
 			intent.putExtra(FROM_MINUTE, m_from_Minute);
-			intent.putExtra(DURATION_MINUTE, m_duration_Hour);
-			intent.putExtra(DURATION_HOUR, m_duration_Minute);
+			
+			intent.putExtra(DURATION_HOUR, m_duration_Hour);
+			intent.putExtra(DURATION_MINUTE, m_duration_Minute);
+			
 			this.setResult(RESULT_OK, intent);
     	} else {
     		this.setResult(RESULT_CANCELED, intent);

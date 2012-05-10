@@ -25,7 +25,7 @@ import android.widget.Toast;
  * stored as vector of string durations
  */
 public class Home extends ListActivity  {
-	private static final int NEW_ENTRY_KEY = -1;
+	private static final int NEW_ENTRY_KEY = -2;
 	
 	private static final String FROM_YEAR = "FROM_YEAR";
 	private static final String FROM_MONTH = "FROM_MONTH";
@@ -100,7 +100,7 @@ public class Home extends ListActivity  {
             	 * User can enter new duration
             	 */
                 Intent intent = new Intent(this, NewEntry.class);
-                startActivityForResult(intent, NEW_ENTRY_KEY);
+                startActivityForResult(intent, 0);
                 break;
             case R.id.settings:
             	/*
@@ -141,6 +141,7 @@ public class Home extends ListActivity  {
         return true;
     }
     
+    @Override
     protected void onActivityResult(int requestCode, int resultCode,
             Intent data) {
     	
@@ -189,6 +190,8 @@ public class Home extends ListActivity  {
         	duration.setDurationHour(duration_hour);
         	duration.setDurationMinute(duration_minute);
         	
+        	//replace old duration entry
+        	m_duration_entries.setElementAt(duration, requestCode);
         	//edit duration string
         	m_duration_strings.setElementAt(duration.getDurationString(), requestCode);
         	
