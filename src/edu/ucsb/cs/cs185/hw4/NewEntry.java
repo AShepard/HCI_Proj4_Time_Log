@@ -20,13 +20,21 @@ import android.widget.NumberPicker;
 
 public class NewEntry extends Activity
 {
+	private static final String FROM_YEAR = "FROM_YEAR";
+	private static final String FROM_MONTH = "FROM_MONTH";
+	private static final String FROM_DAY = "FROM_DAY";
+	private static final String FROM_HOUR= "FROM_HOUR";
+	private static final String FROM_MINUTE = "FROM_MINUTE";
+	
+	private static final String DURATION_MINUTE = "DURATION_MINUTE";
+	private static final String DURATION_HOUR = "DURATION_HOUR";
 	
 	private int m_from_Year = 2012, m_from_Month = 4, m_from_Day = 27;
 	private int m_from_Hour = 23, m_from_Minute = 59;
 	private int m_to_Year = 2012, m_to_Month = 4, m_to_Day = 27;
 	private int m_to_Hour = 23, m_to_Minute = 59;
+	private int m_duration_Hour = 0, m_duration_Minute = 0;
 	
-	private static final String NEW_ENTRY = "NEW ENTRY";
 	
 	private DatePicker datePicker;
 	private TimePicker timePicker;
@@ -41,6 +49,19 @@ public class NewEntry extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newentry);
         
+        //Get extra information if available
+        //Went over this in Disc
+        Bundle extras = getIntent().getExtras(); 
+        if(extras != null) {
+        	m_from_Year = extras.getChar(FROM_YEAR);
+        	m_from_Month = extras.getChar(FROM_MONTH);
+        	m_from_Day = extras.getChar(FROM_DAY);
+        	m_from_Hour = extras.getChar(FROM_HOUR);
+        	m_from_Minute = extras.getChar(FROM_MINUTE);
+        	
+        	m_duration_Hour = extras.getChar(DURATION_HOUR);
+        	m_duration_Minute = extras.getChar(DURATION_MINUTE);
+        }
         
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         datePicker.init(m_from_Year, m_from_Month, m_from_Day, null);
@@ -48,18 +69,21 @@ public class NewEntry extends Activity
 		datePicker.setMaxDate(1335553140000L); // 4/27/2012 11:59 in epochs
 		
         timePicker = (TimePicker) findViewById(R.id.timePicker);
-        timePicker.setCurrentHour(23);
-        timePicker.setCurrentMinute(59);
+        timePicker.setCurrentHour(m_from_Hour);
+        timePicker.setCurrentMinute(m_from_Minute);
         
+        /*
+         * Below are for duration fields
+         */
         hourPicker = (NumberPicker) findViewById(R.id.hourPicker);
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(47);
-        hourPicker.setValue(0); 
+        hourPicker.setValue(m_duration_Hour); 
 
         minutePicker = (NumberPicker) findViewById(R.id.minutePicker);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
-        minutePicker.setValue(0);
+        minutePicker.setValue(m_duration_Minute);
         
         b_set = (Button) findViewById(R.id.buttonSet);
         b_set.setOnClickListener(new OnClickListener() {
@@ -69,30 +93,6 @@ public class NewEntry extends Activity
 			}
 		});
         
-    }
-    
-    String DateTimeToString(int year, int month, int day, int hour, int minute)
-    {
-    	return (month + "/" + day + "/" + year + ", " + hour + ":" + String.format("%02d", minute));
-    }
-    
-    String DurationToString(String from_date, String to_date) {
-    	String duration = "";
-    	
-    	duration = from_date + " - " + to_date;
-    	
-    	return duration;
-    }
-    
-    void addDuration()
-    {
-    	String to_date, from_date, duration;
-    	to_date= DateTimeToString(m_from_Year, m_from_Month, m_from_Day, m_from_Hour, m_from_Minute);
-    	from_date =	DateTimeToString(m_to_Year, m_to_Month, m_to_Day, m_to_Hour, m_to_Minute);
-    	
-    	duration = DurationToString(from_date, to_date);
-    	
-    	finishEntry(duration);
     }
     
     @Override
@@ -106,7 +106,7 @@ public class NewEntry extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home:
-            	finishEntry("");
+            	finishEntry(false);
                 break;
             case R.id.settings:
             	/*
@@ -153,27 +153,25 @@ public class NewEntry extends Activity
     	m_from_Hour = timePicker.getCurrentHour();
     	m_from_Minute = timePicker.getCurrentMinute();
 
-    	int duration = hourPicker.getValue() * 60 + minutePicker.getValue();
+    	m_duration_Hour = hourPicker.getValue();
+    	m_duration_Minute = minutePicker.getValue();
+
     	
-    	Calendar calendar = Calendar.getInstance();
-    	calendar.set(m_from_Year, m_from_Month - 1, m_from_Day, m_from_Hour, m_from_Minute);
-    	calendar.add(Calendar.MINUTE, duration);
-    	
-    	m_to_Day = calendar.get(Calendar.DATE);
-    	m_to_Month = calendar.get(Calendar.MONTH) + 1;
-    	m_to_Year = calendar.get(Calendar.YEAR);
-    	m_to_Hour = calendar.get(Calendar.HOUR_OF_DAY);
-    	m_to_Minute = calendar.get(Calendar.MINUTE);
-    	
-    	addDuration();
+    	finishEntry(true);
     }
     
-    private void finishEntry(String new_entry) {
+    private void finishEntry(boolean send_data) {
     	Intent intent = this.getIntent();
     	
-    	if(new_entry != "") {
-    		intent.putExtra(NEW_ENTRY, new_entry);
-    		this.setResult(RESULT_OK, intent);
+    	if(send_data) {
+			intent.putExtra(FROM_YEAR, m_from_Year);
+			intent.putExtra(FROM_MONTH, m_from_Month);
+			intent.putExtra(FROM_DAY, m_from_Day);
+			intent.putExtra(FROM_HOUR, m_from_Hour);
+			intent.putExtra(FROM_MINUTE, m_from_Minute);
+			intent.putExtra(DURATION_MINUTE, m_duration_Hour);
+			intent.putExtra(DURATION_HOUR, m_duration_Minute);
+			this.setResult(RESULT_OK, intent);
     	} else {
     		this.setResult(RESULT_CANCELED, intent);
     	}
