@@ -51,7 +51,8 @@ public class DurationEntry {
 	}
 	
 	public int getFromMonth() {
-		return m_from_month;
+		//convert month to zero based indexing
+		return m_from_month - 1;
 	}
 	
 	public int getFromDay() {
@@ -64,6 +65,14 @@ public class DurationEntry {
 	
 	public int getFromMinute() {
 		return m_from_minute;
+	}
+	
+	public int getDurationHour() {
+		return m_duration_hour;
+	}
+	
+	public int getDurationMinute() {
+		return m_duration_minute;
 	}
 	/* TODO: REMOVE
 	public int getToYear() {

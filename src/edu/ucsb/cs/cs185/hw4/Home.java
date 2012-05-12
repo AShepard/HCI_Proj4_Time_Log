@@ -25,7 +25,8 @@ import android.widget.Toast;
  * stored as vector of string durations
  */
 public class Home extends ListActivity  {
-	private static final int NEW_ENTRY_KEY = -2;
+	//TODO: This is a bad way to do this
+	private static final int NEW_ENTRY_KEY = 999999;
 	
 	private static final String FROM_YEAR = "FROM_YEAR";
 	private static final String FROM_MONTH = "FROM_MONTH";
@@ -73,17 +74,22 @@ public class Home extends ListActivity  {
     }
 	
 	private void editTimeEntry(View view, int position, long id) {
-		Bundle extras = new Bundle();
-		extras.putInt(FROM_YEAR, 1);
-		extras.putInt(FROM_MONTH, 1);
-		extras.putInt(FROM_DAY, 1);
-		extras.putInt(FROM_HOUR, 1);
-		extras.putInt(FROM_MINUTE, 1);
-		extras.putInt(DURATION_MINUTE, 1);
-		extras.putInt(DURATION_HOUR, 1);
+		DurationEntry duration = m_duration_entries.get(position);
 		
+		/*
+		 * place current values into bundle so NewEntry will display current entered fields
+		 */
 		Intent intent = new Intent(this, NewEntry.class);
-        startActivityForResult(intent, NEW_ENTRY_KEY);
+		intent.putExtra(FROM_YEAR, duration.getFromYear());
+ 		intent.putExtra(FROM_MONTH, duration.getFromMonth());
+		intent.putExtra(FROM_DAY, duration.getFromDay());
+		intent.putExtra(FROM_HOUR, duration.getFromHour());
+		intent.putExtra(FROM_MINUTE, duration.getFromMinute());
+		
+		intent.putExtra(DURATION_HOUR, duration.getDurationHour());
+		intent.putExtra(DURATION_MINUTE, duration.getDurationMinute());
+		
+        startActivityForResult(intent, position);
 	}
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +106,7 @@ public class Home extends ListActivity  {
             	 * User can enter new duration
             	 */
                 Intent intent = new Intent(this, NewEntry.class);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, NEW_ENTRY_KEY);
                 break;
             case R.id.settings:
             	/*

@@ -53,14 +53,14 @@ public class NewEntry extends Activity
         //Went over this in Disc
         Bundle extras = getIntent().getExtras(); 
         if(extras != null) {
-        	m_from_Year = extras.getChar(FROM_YEAR);
-        	m_from_Month = extras.getChar(FROM_MONTH);
-        	m_from_Day = extras.getChar(FROM_DAY);
-        	m_from_Hour = extras.getChar(FROM_HOUR);
-        	m_from_Minute = extras.getChar(FROM_MINUTE);
+        	m_from_Year = extras.getInt(FROM_YEAR);
+        	m_from_Month = extras.getInt(FROM_MONTH);
+        	m_from_Day = extras.getInt(FROM_DAY);
+        	m_from_Hour = extras.getInt(FROM_HOUR);
+        	m_from_Minute = extras.getInt(FROM_MINUTE);
         	
-        	m_duration_Hour = extras.getChar(DURATION_HOUR);
-        	m_duration_Minute = extras.getChar(DURATION_MINUTE);
+        	m_duration_Hour = extras.getInt(DURATION_HOUR);
+        	m_duration_Minute = extras.getInt(DURATION_MINUTE);
         }
         
         datePicker = (DatePicker) findViewById(R.id.datePicker);
@@ -176,4 +176,10 @@ public class NewEntry extends Activity
     	finish();
     }
     
+    @Override
+    public void onBackPressed() {
+    	Intent intent = this.getIntent();
+    	this.setResult(RESULT_CANCELED, intent);
+    	finish();
+    }
 }
