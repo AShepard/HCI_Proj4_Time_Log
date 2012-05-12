@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,16 +44,20 @@ public class Home extends ListActivity  {
     public void onCreate(Bundle savedInstanceState)
     {
 		super.onCreate(savedInstanceState);
-        
-		if (m_duration_strings == null) {
-			m_duration_strings = new Vector<String>();
-		}
 		
+		//http://www.devx.com/wireless/Article/40792/1954
+		m_duration_entries = (Vector<DurationEntry>)getLastNonConfigurationInstance();
 		if (m_duration_entries == null) {
 			m_duration_entries = new Vector<DurationEntry>();
+			m_duration_strings = new Vector<String>();
+		} else {
+			int size = m_duration_entries.size();
+			m_duration_strings = new Vector<String>(size);
+			for(int i=0; i< size; i++) {
+				
+				m_duration_strings.addElement(m_duration_entries.get(i).getDurationString());
+			}
 		}
-		
-		updateList();
         
 		//http://developer.android.com/resources/tutorials/views/hello-listview.html
 		ListView lv = getListView();
@@ -66,8 +71,23 @@ public class Home extends ListActivity  {
 				editTimeEntry(view, position, id);
 			}
 		  });
-        
+		updateList();
     }
+	
+	//http://www.devx.com/wireless/Article/40792/1954
+	@Override
+	public Object onRetainNonConfigurationInstance()
+	{
+		return m_duration_entries;
+	}
+	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	  super.onConfigurationChanged(newConfig);
+	  updateList();
+	}
+	
 	String StringToDateTime(int year, int month, int day, int hour, int minute)
     {
     	return (month + "/" + day + "/" + year + ", " + hour + ":" + String.format("%02d", minute));
